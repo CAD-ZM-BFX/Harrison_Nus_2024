@@ -19,7 +19,7 @@ Journal xxx,  [![DOI](https://doi.org/***)](https://doi.org/***) <br>
 *Address for correspondance: Dr Meritxell Nus, VPD Heart and Lung Research Institute (HLRI), Cardiovascular Division, Dept. of Medicine, University of Cambridge, Papworth Road, Cambridge Biomedical Campus, Cambridge CB2 0BB, United Kingdom. Email: mn421@cam.ac.uk
 
 
-Code Release for this github: [![DOI](https://zenodo.org/badge/***)](https://zenodo.org/badge/latestdoi/***)
+Code Release for this github: [![DOI](https://zenodo.org/badge/730721882.svg)](https://zenodo.org/doi/10.5281/zenodo.10370881)
 
 ## Abstract
 **Aims:** The adaptive immune response plays an important role in atherosclerosis. In response to a high fat/high cholesterol (HF/HC) diet, marginal zone B (MZB) cells activate an atheroprotective programme by regulating the differentiation and accumulation of “poorly differentiated” T follicular helper (Tfh) cells. On the other hand, Tfh cells activate the germinal center response, which promotes atherosclerosis through the production of class-switched high-affinity antibodies. We therefore investigated the direct role of Tfh cells and the role of IL18 in Tfh differentiation in atherosclerosis. <br>
@@ -36,18 +36,70 @@ Code Release for this github: [![DOI](https://zenodo.org/badge/***)](https://zen
   3. The average library length (including adapters) was 342bp. <br>
 
 ## Sample Table summary
-CAD_mnus421_0002-nextflow_SampleTable.csv[[CSV](Sample_Info_Tables/CAD_mnus421_0002-Nextflow_SampleTable.csv)]
+CAD_mnus421_0002-nextflow_SampleTable.csv[[CSV](Sample_Info_Tables/CAD_mnus421_0002-Nextflow_SampleTable.csv)] <br>
+
 CAD_mnus421_0002_SampleTable.csv[[CSV](Sample_Info_Tables/CAD_mnus421_0002_SampleTable.csv)]
 
-## Nextflow Command
+## nf-core/rnaseq Workflow Summary
 
-```shell
-nextflow run nf-core/rnaseq -bg -profile singularity -r 3.2 \
-                            --skipBiotypeQC --input CAD_mnus421_0002-nextflow_SampleTable.csv \
-                            --aligner star_salmon --fasta GRCm39.fa.gz \
-                            --gtf GRCm39.gtf.gz --gtf_extra_attributes 'gene_name' \
-                            --outdir  Results --multiqc_title CAD_mnus421_0002-NF_Ensembl_GRCm39 \
-                            --email xz289@cam.ac.uk -with-report Results/report.html &> Results/nextflow_command.log &
+**Core Nextflow options**
+
+**revision** 3.2 <br>
+
+**runName** jolly_roentgen <br>
+
+**containerEngine** singularity <br>
+
+**launchDir**
+    /rds/project/rds-OsGdhNr6c2U/CAD-Projects/mnus421/CAD_mnus421_0002/Original_data <br>
+
+**workDir**
+    /rds/project/rds-OsGdhNr6c2U/CAD-Projects/mnus421/CAD_mnus421_0002/Original_data/work <br>
+
+**projectDir**
+    /home/xz289/.nextflow/assets/nf-core/rnaseq <br>
+
+**userName**
+    xz289 <br>
+
+**profile**  singularity <br>
+
+**configFiles**
+    /home/xz289/.nextflow/config, /home/xz289/.nextflow/assets/nf-core/rnaseq/nextflow.config <br>
+
+**Input/output options** <br>
+
+**input**
+    CAD_mnus421_0002-nextflow_SampleTable.csv <br>
+**outdir**
+    /home/xz289/rds/rds-cad_bfx_projects-OsGdhNr6c2U/CAD-Projects/mnus421/CAD_mnus421_0002/NextFlow_GRCm39 <br>
+**email**
+    xz289@cam.ac.uk <br>
+**multiqc_title**
+    CAD_mnus241_0002-NF_Ensembl_GRCm39 <br>
+
+**Reference genome options**
+
+**fasta**
+    /home/xz289/rds/rds-cad_bfx_projects-OsGdhNr6c2U/Genomes/Mus_musculus/GRCm39/GRCm39.fa.gz <br>
+**gtf**
+    /home/xz289/rds/rds-cad_bfx_projects-OsGdhNr6c2U/Genomes/Mus_musculus/GRCm39/GRCm39.gtf.gz <br>
+**gtf_extra_attributes**
+    gene_id <br>
+
+
+```{shell}
+nextflow run nf-core/rnaseq -bg -profile singularity -r 3.2 --singleEnd \
+              --skipBiotypeQC --input CAD_mnus421_0002-nextflow_SampleTable.csv \
+              --aligner star_salmon \     
+              --fasta ${refdir}/GRCh39.fa.gz \
+              --gtf ${refdir}/GRCh39.gtf.gz \
+              --gtf_extra_attributes 'gene_id' \
+              --outdir   ${Outdir} \
+              --multiqc_title CAD_mnus241_0002-NF_Ensembl_GRCm39 \
+              --email xz289@cam.ac.uk -with-report ${Outdir}/report.html &> ${Outdir}/nextflow_command.log &  
+
+
 ```
 
 ## RNASeq analysis Scripts
@@ -85,3 +137,25 @@ in Figure 3E and all pathways can be found in Supplementary Data 2.
 |Fig3E | [[PDF](Figures_Tables/Fig3E-EnrichR_selN21_pathways_02_Nov_2021.pdf)] |<IMG SRC="Figures_Tables/Fig3E-EnrichR_selN21_pathways_02_Nov_2021.png" width=800px>|  Selected significantly enriched GSEA pathways. Each bar represents the number of significantly expressed genes in each pathway. Orange denotes up and grey down-regulated in MZB cells from No Tfh vs WT.|
 |SData1 | [[xlsx](Figures_Tables/Supplementary_Data_1.xlsx)] || Full DEGs' list & Selected DEGs list for GESA analysis input |
 |SData2 | [[xlsx](Figures_Tables/Supplementary_Data_2.xlsx)] || GSEA using enrichr output |
+
+## Software versions
+
+Software | Version| | Software| Version|
+---------| -------| ---|---------| -------|
+bedtools |  2.30.0 | |bioconductor-summarizedexperiment |1.20.0|
+bioconductor-tximeta|1.8.0||deseq2|1.28.0|
+dupradar|1.18.0||fastqc|0.11.9|
+nextflow|21.05.0.edge||nf-core/rnaseq|3.2|
+picard|2.23.9||preseq|3.1.1|
+qualimap|2.2.2-dev||rseqc|3.0.1|
+salmon|1.4.0||samtools|1.10|
+star|2.6.1d||stringtie|2.1.4|
+subread|2.0.1||trimgalore|0.6.6|
+ucsc|377||R|4.1.1|
+ComplexHeatmap|2.6.2||clusterProfiler|4.0.5|
+
+
+
+## Contact Information
+
+Dr Xiaohui Zhao (xz289@cam.ac.uk)
